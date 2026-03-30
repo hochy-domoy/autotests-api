@@ -23,4 +23,4 @@ class PublicUserClient(APIClient):
         :param request: Словарь с email, password, lastName, firstName, middleName.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/authentication/login", json=request)
+        return self.post("/api/v1/users", json=request)
