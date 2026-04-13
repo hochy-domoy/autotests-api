@@ -30,19 +30,7 @@ private_user_client = get_private_users_client(authentication_client_response)
 get_user_response_client = private_user_client.get_user_api(create_user_response_json['user']['id']).json()
 
 #Генерируем JSON схему для ответа GET запроса
-user_request = UserSchema(
-    id= "string",
-    email= get_random_email(),
-    last_name= "string",
-    first_name= "string",
-    middle_name= "string"
-)
-
-get_user_response = GetUserResponseSchema(
-    user= user_request
-)
-
-get_user_response_schema = get_user_response.model_json_schema()
+get_user_response_schema = GetUserResponseSchema.model_json_schema()
 
 #Валидируем ответ GET запроса
 validate_json_schema(instance=get_user_response_client, schema=get_user_response_schema)
