@@ -1,4 +1,4 @@
-from clients.users.puplic_user_clients import get_public_users_client
+from clients.users.puplic_user_clients import get_public_users_client, PublicUserClient
 from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema
 from http import HTTPStatus
 # Импортируем функцию проверки статус-кода
@@ -12,10 +12,7 @@ import pytest
 
 @pytest.mark.users
 @pytest.mark.regression
-def test_create_user():
-    # Инициализируем API-клиент для работы с пользователями
-    public_users_client = get_public_users_client()
-
+def test_create_user(public_users_client: PublicUserClient):
     # Формируем тело запроса на создание пользователя
     request = CreateUserRequestSchema()
     # Отправляем запрос на создание пользователя
