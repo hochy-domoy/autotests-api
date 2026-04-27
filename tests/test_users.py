@@ -1,8 +1,10 @@
-from clients.users.puplic_user_clients import get_public_users_client, PublicUserClient
-from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema
+from clients.users.private_users_client import PrivateUsersClient
+from clients.users.puplic_user_clients import PublicUserClient
+from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema, GetUserResponseSchema
 from http import HTTPStatus
+
 # Импортируем функцию проверки статус-кода
-from tools.assertions.base import assert_status_code
+from tools.assertions.base import assert_status_code, assert_get_user_response
 # Импортируем функцию для валидации JSON Schema
 from tools.assertions.schema import validate_json_schema
 # Импортируем функцию для проверки ответа создания юзера
@@ -17,13 +19,27 @@ def test_create_user(public_users_client: PublicUserClient):
     request = CreateUserRequestSchema()
     # Отправляем запрос на создание пользователя
     response = public_users_client.create_user_api(request)
-    # Инициализируем модель ответа на основе полученного JSON в ответе
-    # Также благодаря встроенной валидации в Pydantic дополнительно убеждаемся, что ответ корректный
+    # Валидация ответа (login_response_data -> response_data)
     response_data = CreateUserResponseSchema.model_validate_json(response.text)
 
     # Используем функцию для проверки статус-кода
     assert_status_code(response.status_code, HTTPStatus.OK)
     # Используем функцию для проверки ответа создания юзера
     assert_create_user_response(request, response_data)
+    # Проверяем, что тело ответа соответствует ожидаемой JSON-схеме
+    validate_json_schema(response.json(), response_data.model_json_schema())
+
+@pytest.mark.users
+@pytest.mark.regression
+def test_get_user_me(private_users_client: PrivateUsersClient, function_user):
+    # Отправляем запрос на получение пользователя
+    response = private_users_client.get_users_me_api()
+    # Валидация ответа (login_response_data -> response_data)
+    response_data = GetUserResponseSchema.model_validate_json(response.text)
+
+    # Используем функцию для проверки статус-кода
+    assert_status_code(response.status_code, HTTPStatus.OK)
+    # Используем функцию для проверки ответа получения юзера
+    assert_get_user_response(response_data, function_user.response)
     # Проверяем, что тело ответа соответствует ожидаемой JSON-схеме
     validate_json_schema(response.json(), response_data.model_json_schema())

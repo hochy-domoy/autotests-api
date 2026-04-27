@@ -1,6 +1,6 @@
 from clients.api_client import APIClient
 from httpx import Response
-from clients.users.users_schema import UpdateUserRequestSchema, UpdateUserResponseSchema
+from clients.users.users_schema import UpdateUserRequestSchema, UpdateUserResponseSchema, GetUserResponseSchema
 from clients.private_http_builder import get_private_http_client, AuthenticationUserSchema
 
 class PrivateUsersClient(APIClient):
@@ -44,9 +44,9 @@ class PrivateUsersClient(APIClient):
         return self.delete(f"/api/v1/users/{user_id}")
 
     # Добавили новый метод
-    def get_user(self, user_id: str) -> UpdateUserResponseSchema:
+    def get_user(self, user_id: str) -> GetUserResponseSchema:
         response = self.get_user_api(user_id)
-        return UpdateUserResponseSchema.model_validate_json(response.text)
+        return GetUserResponseSchema.model_validate_json(response.text)
 
 # Добавляем builder для PrivateUsersClient
 def get_private_users_client(user: AuthenticationUserSchema) -> PrivateUsersClient: #нужно, чтобы не авторизовываться
