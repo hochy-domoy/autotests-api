@@ -10,13 +10,18 @@ from tools.assertions.schema import validate_json_schema
 # Импортируем функцию для проверки ответа создания юзера
 from tools.assertions.users import assert_create_user_response
 import pytest
+from tools.fakers import fake
 
 
 @pytest.mark.users
 @pytest.mark.regression
-def test_create_user(public_users_client: PublicUserClient):
+@pytest.mark.parametrize("domain", ["mail.ru", "gmail.com", "example.com"])
+def test_create_user(public_users_client: PublicUserClient, domain: str):
     # Формируем тело запроса на создание пользователя
-    request = CreateUserRequestSchema()
+    request = CreateUserRequestSchema(
+        email=fake.email(domain)
+    )
+    print(request)
     # Отправляем запрос на создание пользователя
     response = public_users_client.create_user_api(request)
     # Валидация ответа (login_response_data -> response_data)
