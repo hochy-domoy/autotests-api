@@ -1,6 +1,7 @@
-from typing import Any
+from typing import Any, Sized
 
 from clients.users.users_schema import UserSchema, GetUserResponseSchema, CreateUserResponseSchema
+
 
 
 def assert_status_code(actual: int, expected: int):
@@ -68,3 +69,18 @@ def assert_get_user_response(get_user_response: GetUserResponseSchema, create_us
     :param create_user_response: Ответ API при создании пользователя.
     """
     assert_user(actual=get_user_response.user, expected=create_user_response.user)
+
+def assert_length(actual: Sized, expected: Sized, name: str):
+    """
+    Проверяет, что длины двух объектов совпадают.
+
+    :param name: Название проверяемого объекта.
+    :param actual: Фактический объект.
+    :param expected: Ожидаемый объект.
+    :raises AssertionError: Если длины не совпадают.
+    """
+    assert len(actual) == len(expected), (
+        f'Incorrect object length: "{name}". '
+        f'Expected length: {len(actual)}.' 
+        f'Actual length: {len(actual)}'
+    )
