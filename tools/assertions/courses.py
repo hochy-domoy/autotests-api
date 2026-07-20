@@ -1,5 +1,5 @@
 from clients.courses.courses_schema import UpdateCourseRequestSchema, UpdateCourseResponseSchema, CourseSchema, \
-    GetCoursesResponseSchema, CreateCourseResponseSchema
+    GetCoursesResponseSchema, CreateCourseResponseSchema, CreateCourseRequestSchema
 from tools.assertions.base import assert_equal, assert_user, assert_length
 from tools.assertions.files import assert_file
 
@@ -62,3 +62,22 @@ def assert_get_courses_response(
 
     for index , create_course_response in enumerate(create_course_responses):
         assert_course(get_courses_response.courses[index], create_course_response.course)
+
+def assert_create_course_response(
+        actual: CreateCourseResponseSchema,
+        expected: CreateCourseRequestSchema,
+    ):
+    """
+    Проверяет, что фактические данные созданного курса соответствуют ожидаемым.
+
+    :param actual: Фактические данные курса.
+    :param expected: Ожидаемые данные курса.
+    :raises AssertionError: Если хотя бы одно поле не совпадает.
+    """
+    assert_equal(actual.course.title, expected.title, "title")
+    assert_equal(actual.course.max_score, expected.max_score, "max_score")
+    assert_equal(actual.course.min_score, expected.min_score, "min_score")
+    assert_equal(actual.course.description, expected.description, "description")
+    assert_equal(actual.course.estimated_time, expected.estimated_time, "estimated_time")
+    assert_equal(actual.course.preview_file.id, expected.preview_file_id, "preview_file_id")
+    assert_equal(actual.course.created_by_user.id, expected.created_by_user_id, "created_by_user_id")
