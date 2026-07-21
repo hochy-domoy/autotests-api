@@ -16,7 +16,6 @@ from tools.assertions.schema import validate_json_schema
 class TestExercises:
     def test_create_exercise(self,
                              exercise_client: ExercisesClient,
-                             function_exercise: ExerciseFixture,
                              function_course: CourseFixture,
                              ):
         request = CreateExerciseRequestSchema(
