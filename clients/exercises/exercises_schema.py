@@ -22,6 +22,9 @@ class GetExercisesResponseSchema(BaseModel):
 
 
 class ExerciseResponseSchema(BaseModel):
+    """
+    Описание структуры ответа на создание задания.
+    """
     exercise: ExerciseSchema
 
 
@@ -61,3 +64,9 @@ class UpdateExerciseRequestSchema(BaseModel):
     order_index: int | None = Field(default_factory=fake.integer)
     description: str | None = Field(default_factory=fake.text)
     estimated_time: str | None = Field(default_factory=fake.estimated_time)
+
+class GetExerciseResponseSchema(BaseModel):
+    """
+    Описание структуры ответа на получение задания.
+    """
+    exercise: ExerciseSchema
