@@ -8,11 +8,11 @@ from tools.allure.features import AllureFeature
 from tools.allure.stories import AllureStory
 from tools.allure.tags import AllureTags
 # Импортируем функцию проверки статус-кода
-from tools.assertions.base import assert_status_code, assert_get_user_response
+from tools.assertions.base import assert_status_code
 # Импортируем функцию для валидации JSON Schema
 from tools.assertions.schema import validate_json_schema
 # Импортируем функцию для проверки ответа создания юзера
-from tools.assertions.users import assert_create_user_response
+from tools.assertions.users import assert_create_user_response, assert_get_user_response
 import pytest
 from tools.fakers import fake
 import allure

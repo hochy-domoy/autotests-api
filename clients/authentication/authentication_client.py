@@ -4,12 +4,14 @@ from httpx import Response
 from clients.authentication.authentication_schema import (LoginRequestSchema, RefreshRequestSchema,
                                                           LoginResponseSchema)
 from clients.public_http_builder import get_public_http_client
+import allure
 
 # Старые модели с использованием TypedDict были удалены
 class AauthenticationClient(APIClient):
     """
     Клиент для работы с /api/v1/authentication
     """
+    @allure.step("Authenticate user")
     def login_api(self, request : LoginRequestSchema) -> Response:
         """
         Метод выполняет аутентификацию пользователя.
@@ -19,6 +21,7 @@ class AauthenticationClient(APIClient):
         """
         return self.post("/api/v1/authentication/login", json=request.model_dump(by_alias=True))
 
+    @allure.step("Refresh authentication token")
     def refresh_api(self, request : RefreshRequestSchema) -> Response:
         """
         Метод обновляет токен авторизации.
