@@ -4,6 +4,9 @@ from pydantic import BaseModel
 from clients.authentication.authentication_client import get_authentication_client, LoginRequestSchema
 from functools import lru_cache
 
+from clients.event_hooks import curl_event_hook
+
+
 class AuthenticationUserSchema(BaseModel, frozen=True):  # Структура данных пользователя для авторизации
     email: str                              # Наследуем от BaseModel вместо TypedDict
     password: str
@@ -34,4 +37,5 @@ def get_private_http_client(user: AuthenticationUserSchema) -> Client:
         # Добавляем заголовок авторизации
         # Значения теперь извлекаем не по ключу, а через атрибуты
         headers={"Authorization": f"Bearer {login_response.token.access_token}"},
+        event_hooks={"request": [curl_event_hook]}
     )
