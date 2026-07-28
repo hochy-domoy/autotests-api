@@ -1,12 +1,11 @@
-import pytest
-
+import allure
 from clients.errors_schema import InternalErrorResponseSchema
 from clients.exercises.exercises_schema import CreateExerciseRequestSchema, ExerciseResponseSchema, ExerciseSchema, \
     GetExercisesResponseSchema, GetExerciseResponseSchema, UpdateExerciseResponseSchema, UpdateExerciseRequestSchema
 from tools.assertions.base import assert_equal, assert_length
 from tools.assertions.errors import assert_internal_response
 
-
+@allure.step("Check create exercise response")
 def assert_create_exercise_response(
         response:CreateExerciseRequestSchema,
         request:ExerciseResponseSchema
@@ -26,6 +25,7 @@ def assert_create_exercise_response(
     assert_equal(response.description, request.exercise.description, "description")
     assert_equal(response.estimated_time, request.exercise.estimated_time, "estimated_time")
 
+@allure.step("Check exercise")
 def assert_exercise(
         response:ExerciseSchema,
         request:ExerciseSchema
@@ -45,6 +45,7 @@ def assert_exercise(
     assert_equal(response.description, request.description, "description")
     assert_equal(response.estimated_time, request.estimated_time, "estimated_time")
 
+@allure.step("Check get exercise response")
 def assert_get_exercise_response(
         get_exercise_response: GetExerciseResponseSchema,
         create_exercise_response: ExerciseResponseSchema
@@ -58,6 +59,7 @@ def assert_get_exercise_response(
     """
     assert_exercise(get_exercise_response.exercise, create_exercise_response.exercise)
 
+@allure.step("Check update exercise response")
 def assert_update_exercise_response(
         response: UpdateExerciseResponseSchema,
         request: UpdateExerciseRequestSchema
@@ -76,6 +78,7 @@ def assert_update_exercise_response(
     assert_equal(response.exercise.description, request.description, "description")
     assert_equal(response.exercise.estimated_time, request.estimated_time, "estimated_time")
 
+@allure.step("Check exercise not found response")
 def assert_exercise_not_found_response(actual: InternalErrorResponseSchema):
     """
     Функция для проверки ошибки, если задание не найдено на сервере.
@@ -86,6 +89,7 @@ def assert_exercise_not_found_response(actual: InternalErrorResponseSchema):
     expected = InternalErrorResponseSchema(detail="Exercise not found")
     assert_internal_response(actual, expected)
 
+@allure.step("Check get exercises response")
 def assert_get_exercises_response(
         get_responses: GetExercisesResponseSchema,
         create_responses: list[ExerciseResponseSchema]
