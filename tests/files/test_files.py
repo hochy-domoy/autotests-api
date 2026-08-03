@@ -42,6 +42,7 @@ class TestFiles:
 
         validate_json_schema(response.json(), response_data.model_json_schema())
 
+    #@pytest.mark.xdist_group(name="files-group")
     @allure.tag(AllureTags.GET_ENTITY)
     @allure.story(AllureStory.GET_ENTITY)
     @allure.sub_suite(AllureStory.GET_ENTITY)
@@ -92,6 +93,7 @@ class TestFiles:
 
         validate_json_schema(response.json(), response_data.model_json_schema())
 
+    #@pytest.mark.xdist_group(name="files-group")
     @allure.tag(AllureTags.DELETE_ENTITY)
     @allure.story(AllureStory.DELETE_ENTITY)
     @allure.sub_suite(AllureStory.DELETE_ENTITY)
