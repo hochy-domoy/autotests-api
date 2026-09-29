@@ -7,7 +7,6 @@ from clients.files.files_client import get_files_users_client
 from clients.private_http_builder import AuthenticationUserSchema
 from clients.users.puplic_user_clients import get_public_users_client, CreateUserRequestSchema
 from clients.files.files_schema import CreateFileRequestSchema
-from tools.fakers import fake
 
 public_user_client = get_public_users_client()
 
@@ -39,6 +38,10 @@ create_course_response = course_client.create_course(create_course_request)
 print('Create course data:', create_course_response)
 
 #Создаем задание
+<<<<<<< HEAD
 create_exercise_request = CreateExerciseRequestSchema()
+=======
+create_exercise_request = CreateExerciseRequestSchema(course_id=create_course_response.course.id)
+>>>>>>> b7919d3a631aa5439b3973847b30057b8745e585
 create_exercise_response = exercise_client.create_exercise(create_exercise_request)
 print('Create exercise data:', create_exercise_response)
